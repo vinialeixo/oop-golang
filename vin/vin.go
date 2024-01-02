@@ -1,5 +1,7 @@
 package vin
 
+import "fmt"
+
 // func Manufacturer(vin string) string {
 // 	manufacturer := vin[:3]
 // 	// if the last digit of the manufacturer ID is a 9
@@ -25,6 +27,18 @@ The optional second part of the ID is a feature of European VINs only.
 // first refactoring is to make VINs their own type and bind the Manufacturer() function to it
 type VIN string
 
+//Using Constructors
+
+/*
+A more elegant way is to put the validity checks in a constructor for the VIN type,
+so that the Manufacturer() function is called for valid VINs only and does not need checks and error handling
+*/
+func NewVIN(code string) (VIN, error) {
+	if len(code) != 17 {
+		return "", fmt.Errorf("invalid VIN %s: more or less than 17 characters", code)
+	}
+	return VIN(code), nil
+}
 func (v VIN) Manufacturer() string {
 	manufacturer := v[:3]
 	if manufacturer[2] == '9' {
